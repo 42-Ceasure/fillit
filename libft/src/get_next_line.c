@@ -44,7 +44,7 @@ static char			*ft_stock(char *s)
 	return (str);
 }
 
-void				ft_norme(char **buff, char **line, char **save, int ret)
+static void				ft_norme(char **buff, char **line, char **save, int ret)
 {
 	ft_strdel(buff);
 	*line = ft_line(*save);

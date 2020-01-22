@@ -12,62 +12,61 @@
 
 #include "libft.h"
 
-static int			ft_count(char const *s, char c)
+static int		ft_cnt_parts(const char *s, char c)
 {
-	int				i;
-	int				len;
+	int		cnt;
+	int		in_substring;
 
-	i = 0;
-	len = 0;
-	while (s[i])
+	in_substring = 0;
+	cnt = 0;
+	while (*s != '\0')
 	{
-		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
-			len++;
-		i++;
+		if (in_substring == 1 && *s == c)
+			in_substring = 0;
+		if (in_substring == 0 && *s != c)
+		{
+			in_substring = 1;
+			cnt++;
+		}
+		s++;
+	}
+	return (cnt);
+}
+
+static int		ft_wlen(const char *s, char c)
+{
+	int		len;
+
+	len = 0;
+	while (*s != c && *s != '\0')
+	{
+		len++;
+		s++;
 	}
 	return (len);
 }
 
-static char			**ft_sublen(char const *s, char c, char **tab, int nbl)
+char			**ft_strsplit(char const *s, char c)
 {
-	int				i;
-	int				j;
-	size_t			start;
-	size_t			len;
+	char	**t;
+	int		nb_word;
+	int		index;
 
-	i = 0;
-	j = 0;
-	while (s[i])
+	index = 0;
+	nb_word = ft_cnt_parts((const char *)s, c);
+	t = (char **)malloc(sizeof(*t) * (ft_cnt_parts((const char *)s, c) + 1));
+	if (t == NULL)
+		return (NULL);
+	while (nb_word--)
 	{
-		if (s[i] != c && nbl > 0)
-		{
-			nbl--;
-			start = i;
-			len = 0;
-			while (s[i] != c && s[i] != '\0')
-			{
-				len++;
-				i++;
-			}
-			tab[j++] = ft_strsub(s, start, len);
-		}
-		i++;
+		while (*s == c && *s != '\0')
+			s++;
+		t[index] = ft_strsub((const char *)s, 0, ft_wlen((const char *)s, c));
+		if (t[index] == NULL)
+			return (NULL);
+		s = s + ft_wlen(s, c);
+		index++;
 	}
-	tab[j] = NULL;
-	return (tab);
-}
-
-char				**ft_strsplit(const char *s, char c)
-{
-	int				nbl;
-	char			**tab;
-
-	nbl = 0;
-	if (!s)
-		return (NULL);
-	nbl = ft_count(s, c);
-	if (!(tab = (char **)ft_memalloc(sizeof(char *) * (nbl + 1))))
-		return (NULL);
-	tab = ft_sublen(s, c, tab, nbl);
-	return (tab);
+	t[index] = NULL;
+	return (t);
 }

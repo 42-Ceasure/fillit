@@ -1,35 +1,34 @@
+# BIG42HEADER #
 
-NAME = fillit
-SRC = 	main.c \
-		error.c \
-		transform.c \
-		solver.c \
-		map.c \
-		utility.c
+.PHONY:		all, clean, fclean, re
+.SUFFIXES:
 
-OBJ = $(SRC:.c=.o)
-INCLUDES = -I libft/inc/libft.h -I fillit.h
-LIBS = -L libft/ -lft
-FLAGS = -Wall -Werror -Wextra
+CC		=	gcc
 
-all: $(NAME)
+CFLAG	=	-Wall -Wextra -Werror
 
-$(NAME): $(OBJ)
-	@make -C libft/ re
-	@gcc -o $(NAME) $(OBJ) $(LIBS)
-	@echo "compile done"
+NAME	=	fillit
 
-$(OBJ): %.o: %.c
-	@gcc $(FLAGS) $(INCLUDES) -c $< -o $@ 
+SRC		=	main.c canvas_meta.c canvas_process.c parser.c tetrimino.c list_manage.c
+
+OBJ		=	$(SRC:.c=.o)
+
+all: 		_libft $(NAME)
+
+$(NAME):	$(OBJ)
+			$(CC) $(CFLAG) -o $@ $^ -L libft/ -lft
+
+%.o:		%.c
+			$(CC) $(CFLAG) -c -o $@ $<
+
+_libft:
+			make -C libft	
 
 clean:
-	@rm -f $(OBJ)
-	@make -C Libft/ clean
-	@echo "clean done"
+			make clean -C libft
+			rm -f $(OBJ)
 
-fclean: clean
-	@rm -f $(NAME)
-	@make -C Libft/ fclean
-	@echo "fclean done"
+fclean: 	clean
+			rm -f $(NAME)
 
-re: fclean all
+re:			fclean all
