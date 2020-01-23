@@ -2,22 +2,32 @@
 
 #include "fillit.h"
 
-t_list		*list_new()
+t_list		*list_new(void)
 {
+	t_list	*ptr;
+	ptr = (t_list *)malloc(sizeof(t_list));
+	ft_bzero(ptr, sizeof(t_list));
+	return (ptr);
+}
+
+void		list_push(t_list **head, t_list *new)
+{
+	new->next = *head;
+	*head = new;
 	return ;
 }
 
-void		list_push()
+t_list		*list_pop(t_list **head)
 {
-	return ;
+	t_list *ptr;
+	ptr = *head;
+	*head = ptr->next;
+	ptr->next = NULL;
+	return (ptr);
 }
 
-t_list		*list_pop()
+void		list_delete(t_list *ptr)
 {
-	return ;
-}
-
-void		list_delete()
-{
+	free(ptr);
 	return ;
 }

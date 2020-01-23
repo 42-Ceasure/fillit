@@ -2,8 +2,55 @@
 
 #include "fillit.h"
 
-void		ceas_official_relay(void)
+void		align_tetri_up(t_tetri *current)
 {
+	int		zero;
+	int		i;
+	t_pos	up;
+
+	up.x = 0;
+	up.y = -1;
+	zero = 0;
+	i = 0;
+	while (zero == 0)
+	{
+		i = 0;
+		while (i < 4)
+		{
+			if (current->positions[i].y == 0)
+				zero = 1;
+			i++;
+		}
+		if (zero == 0)
+			tetri_translate(current, up);
+		print_positions(current->positions, 4)
+		ft_putstr("\n");
+	}
+}
+
+void		prepare_tetri(t_env *env)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < env->n_tetri)
+	{
+		align_tetri_up(env->tetriminos[i]);
+		i++;
+	}
+	return ;
+}
+
+void		ceas_official_relay(t_env *env)
+{
+	t_canvas canvas;
+
+	canvas.buffer = canvas_create_buffer(12);
+	ft_putstr("----------------------");
+	prepare_tetri(env);
+	canvas_try_put(&canvas, env->tetriminos[0]);
+	canvas_try_put(&canvas, env->tetriminos[2]);
+	print_canvas(canvas);
 	return ;
 }
 
@@ -28,7 +75,7 @@ int			main(int ac, char **av)
 		if (uu_legacy_launch(av, &env) != 0)
 			ft_putstr("error\n");
 		else
-			ceas_official_relay();
+			ceas_official_relay(&env);
 	}
 	else
 		ft_putstr("to use : ./fillit <file>");

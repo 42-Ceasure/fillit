@@ -64,7 +64,7 @@ int position_from_raw(t_pos positions[4], char raw[TETRIMINO_INBUF])
             pos_cnt += 1;
             position_set(&positions[pos_cnt - 1], idx % 5, idx / 5);
         }
-        else if (/*raw[idx] != '\n' && */raw[idx] != '.')
+        else if (raw[idx] != '\n' && raw[idx] != '.')
             break;
         idx += 1;
     }
@@ -125,7 +125,7 @@ int parse_raw(t_env *env, char *raw)
     env->tetriminos = ptr;
     while (cnt < env->n_tetri)
     {
-        ptr = tetri_new();
+        ptr = tetri_new(cnt);
         result = parse_next(ptr, raw);
         if (result == -1 || (raw[TETRIMINO_INBUF] != 0 && raw[TETRIMINO_INBUF] != '\n'))
             break;

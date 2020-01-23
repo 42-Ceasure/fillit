@@ -2,7 +2,7 @@
 
 #include "fillit.h"
 
-t_tetri *tetri_new(void)
+t_tetri *tetri_new(int id)
 {
 	t_tetri *new;
 
@@ -10,6 +10,7 @@ t_tetri *tetri_new(void)
 	if (!new)
 		exit(-1);
 	bzero(new, sizeof(*new));
+	new->id = id;
 	return (new);
 }
 
@@ -94,7 +95,7 @@ void tetri_set_pos(t_tetri *self, t_pos new[4])
 {
 	void *dst;
 
-	dst = memmove(&(self->positions), new, sizeof(*self->positions));
+	dst = memmove(&(self->positions), new, sizeof(self->positions));
 	if (dst != &(self->positions))
 		exit(-1); //Don't know if this could happen
 	return;

@@ -37,29 +37,30 @@ char		**canvas_resize_buffer(char **canvas, int size)
 	return (canvas);
 }
 
-void		print_canvas(char **canvas)
+void		print_canvas(t_canvas canvas)
 {
 	int			i;
 
-	while (canvas[i] != NULL)
+	i = 0;
+	while (canvas.buffer[i] != NULL)
 	{
-		ft_putendl(canvas[i]);
+		ft_putendl(canvas.buffer[i]);
 		i++;
 	}
 }
 
-void		clear_canvas(char **canvas)
+void		clear_canvas(t_canvas canvas)
 {
 	int			i;
 	int			j;
 
 	i = 0;
-	while (canvas[i] != NULL)
+	while (canvas.buffer[i] != NULL)
 	{
 		j = 0;
-		while (canvas[i][j] != '\0')
+		while (canvas.buffer[i][j] != '\0')
 		{
-			canvas[i][j] = '.';
+			canvas.buffer[i][j] = '.';
 			j++;
 		}
 		i++;
