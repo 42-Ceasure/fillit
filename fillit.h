@@ -31,6 +31,9 @@ typedef struct	s_tetri
 {
 	t_pos		positions[4];
 	int         id;
+	t_pos		origin;
+	int			w;
+	int			h;
 }				t_tetri;
 
 typedef struct	s_canvas
