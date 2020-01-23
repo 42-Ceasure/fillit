@@ -41,6 +41,44 @@ void		prepare_tetri(t_env *env)
 	return ;
 }
 
+int			solve(t_canvas *canvas, int n_tetri) {
+	int error;
+
+	while (solve_loop(canvas, n_tetri)){
+		resize();
+	}
+	//success;
+
+}
+
+int			canvas_next_position(t_tetri *current, int gridsize) {
+	t_pos	move;
+
+	move.x = 0;
+	move.y = 0;
+	if (current->origin.x + current->w >= gridsize) {
+		if (current->origin.y + current->h >= gridsize)
+			return (-1);
+		move.y = 1;
+	} else
+		move.x = 1;
+	tetri_translate(current, move);
+}
+
+int			solve_loop(t_canvas *self, int n_tetri) {
+	int result;
+
+	result = 0;
+	if (self->offset == n_tetri)
+		return 0;
+	result = canvas_try_brush(self);		
+	if (result == -1) {
+		if (self->offset == 0)
+			return (-1);
+	}
+	return (solve_loop(self, n_tetri));
+}
+
 void		ceas_official_relay(t_env *env)
 {
 	t_canvas canvas;
