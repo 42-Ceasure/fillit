@@ -21,14 +21,6 @@
 #define LEFT 0
 #define RIGHT 1
 
-typedef struct s_list t_list;
-
-typedef struct	s_list
-{
-	void		*data;
-	t_list		*next;
-}				t_list;
-
 typedef struct	s_pos
 {
     int			x;
@@ -44,9 +36,9 @@ typedef struct	s_tetri
 typedef struct	s_canvas
 {
 	char		**buffer;
-	t_list		*history;
-	size_t		n_hist;
 	size_t		bufsize;
+	t_tetri		**tetriminos;
+	int			offset;
 }				t_canvas;
 
 typedef struct	s_env
@@ -65,14 +57,9 @@ int				tetri_collide_few(t_tetri *self, t_pos *pos, unsigned int to_chk);
 
 int				get_tetriminos(t_env *env);
 
-t_list			*list_new();
-void			list_push();
-t_list			*list_pop();
-void			list_delete();
-
 int				canvas_buf_try_pos(char **buffer, t_pos pos);
-int				canvas_try_put(t_canvas *self, t_tetri *current);
-void			canvas_put(t_canvas *self, t_tetri *current);
+int				canvas_try_brush(t_canvas *self);
+void			canvas_brush(t_canvas *self);
 t_pos			*canvas_pop(t_canvas *self);
 
 t_canvas		*canvas_new(int bufsize);

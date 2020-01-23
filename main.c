@@ -23,8 +23,8 @@ void		align_tetri_up(t_tetri *current)
 		}
 		if (zero == 0)
 			tetri_translate(current, up);
-		print_positions(current->positions, 4)
-		ft_putstr("\n");
+		// print_positions(current->positions, 4)
+		// ft_putstr("\n");
 	}
 }
 
@@ -46,10 +46,12 @@ void		ceas_official_relay(t_env *env)
 	t_canvas canvas;
 
 	canvas.buffer = canvas_create_buffer(12);
-	ft_putstr("----------------------");
+	canvas.offset = 0;
+	// ft_putstr("----------------------");
+	canvas.tetriminos = env->tetriminos;
 	prepare_tetri(env);
-	canvas_try_put(&canvas, env->tetriminos[0]);
-	canvas_try_put(&canvas, env->tetriminos[2]);
+	canvas_try_brush(&canvas);
+	// canvas_try_put(&canvas, env->tetriminos[2]);
 	print_canvas(canvas);
 	return ;
 }

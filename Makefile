@@ -5,11 +5,11 @@
 
 CC		=	gcc
 
-CFLAG	=	-Wall -Wextra -Werror
+CFLAG	=	-Wall -Wextra -Werror -g -O0 -fsanitize=address
 
 NAME	=	fillit
 
-SRC		=	main.c canvas_meta.c canvas_process.c parser.c tetrimino.c list_manage.c
+SRC		=	main.c canvas_meta.c canvas_process.c parser.c tetrimino.c
 
 OBJ		=	$(SRC:.c=.o)
 

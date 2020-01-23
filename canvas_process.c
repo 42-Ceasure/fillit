@@ -9,51 +9,44 @@ int			canvas_buf_try_pos(char **buffer, t_pos pos)
 	return (0);
 }
 
-int			canvas_try_put(t_canvas *self, t_tetri *current)
+int			canvas_try_brush(t_canvas *self)
 {
-	if (canvas_buf_try_pos(self->buffer, current->positions[0])
-		|| canvas_buf_try_pos(self->buffer, current->positions[1])
-		|| canvas_buf_try_pos(self->buffer, current->positions[2])
-		|| canvas_buf_try_pos(self->buffer, current->positions[3]))
+	if (canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[0])
+		|| canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[1])
+		|| canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[2])
+		|| canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[3]))
 		return (1);
-	canvas_put(self, current);
+	canvas_brush(self);
 	return (0);
 }
 
-void		canvas_put(t_canvas *self, t_tetri *current)
+void		canvas_brush(t_canvas *self)
 {
-	void		*ptr;
 	int			idx;
 	t_pos		pos;
 
-	ptr = list_new();
-	if (!ptr)
-		return ;
 	idx = 0;
 	while (idx < 4)
 	{
-		pos = current->positions[idx++];
-		self->buffer[pos.y][pos.x] = 'A' + current->id;
+		pos = self->tetriminos[self->offset]->positions[idx];
+		self->buffer[pos.y][pos.x] = 'A' + self->tetriminos[self->offset]->id;
+		idx += 1;
 	}
-	self->n_hist += 1;
-	list_push(&self->history, ptr);
-	self->history->data = current->positions;
+	self->offset += 1;
 	return ;
 }
 
-t_pos		*canvas_pop(t_canvas *self)
+void canvas_undo(t_canvas *self)
 {
-	void		*ptr;
 	int			idx;
 	t_pos		pos;
 
-	ptr = list_pop(&self->history);
-	self->n_hist -= 1;
+	self->offset -= 1;
 	idx = 0;
 	while (idx < 4)
 	{
-		pos = *(t_pos *)((t_list *)ptr)->data;
-		self->buffer[pos.x][pos.y] = '.';
+		pos = self->tetriminos[self->offset]->positions[idx];
+		self->buffer[pos.y][pos.x] = '.';
+		idx += 1;
 	}
-	return (ptr);
 }
