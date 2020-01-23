@@ -63,7 +63,7 @@ int				get_tetriminos(t_env *env);
 int				canvas_buf_try_pos(char **buffer, t_pos pos);
 int				canvas_try_brush(t_canvas *self);
 void			canvas_brush(t_canvas *self);
-t_pos			*canvas_pop(t_canvas *self);
+void			canvas_undo(t_canvas *self);
 
 t_canvas		*canvas_new(int bufsize);
 char			**canvas_create_buffer(int size);

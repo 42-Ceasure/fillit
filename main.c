@@ -69,55 +69,75 @@ void		prepare_tetri(t_env *env)
 	return ;
 }
 
-int			solve(t_canvas *canvas, int n_tetri) {
-	int error;
-
-	while (solve_loop(canvas, n_tetri)){
-		resize();
-	}
-	//success;
-
-}
-
 int			canvas_next_position(t_tetri *current, int gridsize) {
 	t_pos	move;
 
 	move.x = 0;
 	move.y = 0;
-	if (current->origin.x + current->w >= gridsize) {
-		if (current->origin.y + current->h >= gridsize)
+	if (current->origin.x + current->w + 1 > gridsize) {
+		if (current->origin.y + current->h + 1 > gridsize)
 			return (-1);
 		move.y = 1;
+		move.x = - current->origin.x;
 	} else
 		move.x = 1;
+	printf("x, y <%d, %d> h, w <%d, %d>\n", current->origin.x, current->origin.y, current->h, current->w);
 	tetri_translate(current, move);
+	return 0;
 }
 
 int			solve_loop(t_canvas *self, int n_tetri) {
 	int result;
 
-	result = 0;
+	result = 0;	
 	if (self->offset == n_tetri)
 		return 0;
-	result = canvas_try_brush(self);		
-	if (result == -1) {
+	printf("offset <%c> x,y: <%d, %d> result: <%zu>\n", self->tetriminos[self->offset]->id + 'A', self->tetriminos[self->offset]->origin.x, self->tetriminos[self->offset]->origin.y, self->bufsize);
+	result = canvas_try_brush(self);
+	PRINT_RESULT;
+	if (result) {
 		if (self->offset == 0)
 			return (-1);
+		result = canvas_next_position(self->tetriminos[self->offset], self->bufsize);
+		// PRINT_RESULT;
+		if (result) {
+			canvas_undo(self);
+		}
+		self->tetriminos[12000] = NULL;
 	}
+	print_canvas(*self);
+	// printf("offset <%d> x,y: <%d, %d> result: <%zu>\n", self->offset, self->tetriminos[self->offset]->origin.x, self->tetriminos[self->offset]->origin.y, self->bufsize);
+	// read(0, &result, 1);
 	return (solve_loop(self, n_tetri));
+}
+
+int			solve(t_canvas *canvas, int n_tetri) {
+	// int error;
+
+	printf("total %d\n", n_tetri);
+	while (solve_loop(canvas, n_tetri)){
+		ft_putstr("fail\n");
+		canvas_resize_buffer(canvas->buffer, canvas->bufsize + 1);
+		return (-1);
+	}
+	ft_putstr("success\n");
+	return (0);
 }
 
 void		ceas_official_relay(t_env *env)
 {
 	t_canvas canvas;
 
-	canvas.buffer = canvas_create_buffer(12);
+	canvas.buffer = canvas_create_buffer(5);
 	canvas.offset = 0;
+	canvas.bufsize = 5;
 	// ft_putstr("----------------------");
 	canvas.tetriminos = env->tetriminos;
 	prepare_tetri(env);
-	canvas_try_brush(&canvas);
+	// canvas_try_brush(&canvas);
 	// canvas_try_put(&canvas, env->tetriminos[2]);
+	print_canvas(canvas);
+	solve(&canvas, env->n_tetri);
 	print_canvas(canvas);
 	return ;
 }

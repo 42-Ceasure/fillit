@@ -45,6 +45,8 @@ void tetri_translate(t_tetri *self, t_pos move)
 	res[2].y = (self->positions)[2].y + move.y;
 	res[3].y = (self->positions)[3].y + move.y;
 	tetri_set_pos(self, res);
+	self->origin.x += move.x;
+	self->origin.y += move.y;
 	return;
 }
 

@@ -4,6 +4,7 @@
 
 int			canvas_buf_try_pos(char **buffer, t_pos pos)
 {
+	printf("<%d, %d> pos\n", pos.x, pos.y);
 	if (buffer[pos.y][pos.x] != '.')
 		return (1);
 	return (0);
@@ -49,4 +50,8 @@ void canvas_undo(t_canvas *self)
 		self->buffer[pos.y][pos.x] = '.';
 		idx += 1;
 	}
+	pos = self->tetriminos[self->offset]->origin;
+	pos.x *= -1;
+	pos.y *= -1;
+	tetri_translate(self->tetriminos[self->offset], pos);	
 }
