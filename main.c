@@ -10,7 +10,7 @@ int				solve(t_canvas *canvas, size_t n_tetri)
 	y = -1;
 	if (canvas->offset == (int)n_tetri)
 		return (1);
-	while (++y <= ((int)canvas->bufsize - canvas->tetriminos[canvas->offset]->h))
+	while (++y <= ((int)canvas->bufsize - canvas->tetri[canvas->offset]->h))
 	{
 		x = -1;
 		while (++x < (int)canvas->bufsize)
@@ -22,11 +22,11 @@ int				solve(t_canvas *canvas, size_t n_tetri)
 				else
 					canvas_undo(canvas);
 			}
-			set_move(canvas->tetriminos[canvas->offset], 1, 0);
+			set_move(canvas->tetri[canvas->offset], 1, 0);
 		}
-		set_move(canvas->tetriminos[canvas->offset], -x, 1);
+		set_move(canvas->tetri[canvas->offset], -x, 1);
 	}
-	set_move(canvas->tetriminos[canvas->offset], 0, -y);
+	set_move(canvas->tetri[canvas->offset], 0, -y);
 	return (0);
 }
 
@@ -35,7 +35,7 @@ void			start_solve(t_canvas *canvas, size_t n_tetri)
 	while (!solve(canvas, n_tetri))
 	{
 		canvas->bufsize += 1;
-		canvas->buffer = canvas_resize_buffer(canvas->buffer, canvas->bufsize);
+		canvas->buf = canvas_resize_buffer(canvas->buf, canvas->bufsize);
 	}
 }
 
@@ -44,10 +44,10 @@ void			start_work(t_env *env)
 	t_canvas	canvas;
 
 	canvas.bufsize = 2;
-	canvas.buffer = canvas_create_buffer(canvas.bufsize);
+	canvas.buf = canvas_create_buffer(canvas.bufsize);
 	canvas.offset = 0;
 	prepare_tetri(env);
-	canvas.tetriminos = env->tetriminos;
+	canvas.tetri = env->tetri;
 	start_solve(&canvas, env->n_tetri);
 	print_canvas(canvas);
 	return ;

@@ -2,7 +2,7 @@
 
 #include "fillit.h"
 
-char		**canvas_create_buffer(int size)
+char			**canvas_create_buffer(int size)
 {
 	char		**canvas;
 	int			i;
@@ -28,7 +28,7 @@ char		**canvas_create_buffer(int size)
 	return (canvas);
 }
 
-char		**canvas_resize_buffer(char **canvas, int size)
+char			**canvas_resize_buffer(char **canvas, int size)
 {
 	ft_memreg(canvas);
 	canvas = canvas_create_buffer(size);
@@ -37,30 +37,30 @@ char		**canvas_resize_buffer(char **canvas, int size)
 	return (canvas);
 }
 
-void		print_canvas(t_canvas canvas)
+void			print_canvas(t_canvas canvas)
 {
 	int			i;
 
 	i = 0;
-	while (canvas.buffer[i] != NULL)
+	while (canvas.buf[i] != NULL)
 	{
-		ft_putendl(canvas.buffer[i]);
+		ft_putendl(canvas.buf[i]);
 		i++;
 	}
 }
 
-void		clear_canvas(t_canvas canvas)
+void			clear_canvas(t_canvas canvas)
 {
 	int			i;
 	int			j;
 
 	i = 0;
-	while (canvas.buffer[i] != NULL)
+	while (canvas.buf[i] != NULL)
 	{
 		j = 0;
-		while (canvas.buffer[i][j] != '\0')
+		while (canvas.buf[i][j] != '\0')
 		{
-			canvas.buffer[i][j] = '.';
+			canvas.buf[i][j] = '.';
 			j++;
 		}
 		i++;

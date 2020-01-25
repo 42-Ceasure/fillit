@@ -36,14 +36,14 @@ void tetri_translate(t_tetri *self, t_pos move)
 {
 	t_pos res[4];
 
-	res[0].x = (self->positions)[0].x + move.x;
-	res[1].x = (self->positions)[1].x + move.x;
-	res[2].x = (self->positions)[2].x + move.x;
-	res[3].x = (self->positions)[3].x + move.x;
-	res[0].y = (self->positions)[0].y + move.y;
-	res[1].y = (self->positions)[1].y + move.y;
-	res[2].y = (self->positions)[2].y + move.y;
-	res[3].y = (self->positions)[3].y + move.y;
+	res[0].x = (self->pos)[0].x + move.x;
+	res[1].x = (self->pos)[1].x + move.x;
+	res[2].x = (self->pos)[2].x + move.x;
+	res[3].x = (self->pos)[3].x + move.x;
+	res[0].y = (self->pos)[0].y + move.y;
+	res[1].y = (self->pos)[1].y + move.y;
+	res[2].y = (self->pos)[2].y + move.y;
+	res[3].y = (self->pos)[3].y + move.y;
 	tetri_set_pos(self, res);
 	self->origin.x += move.x;
 	self->origin.y += move.y;
@@ -52,11 +52,11 @@ void tetri_translate(t_tetri *self, t_pos move)
 
 
 /**
- *  @pos: array of positions to check against
+ *  @pos: array of pos to check against
  *  @to_chk: number of elements in @pos
  *  
- *  this function return the number of positions in pos which overlap with
- *  the tetri's own positions - or 0 
+ *  this function return the number of pos in pos which overlap with
+ *  the tetri's own pos - or 0 
  */
 
 int tetri_collide_few(t_tetri *self, t_pos *pos, unsigned int to_chk)
@@ -76,18 +76,18 @@ int tetri_collide_few(t_tetri *self, t_pos *pos, unsigned int to_chk)
 /**
  *  @pos: array of position to check against
  *    
- *  return 1 if pos overlap with tetri's own positions 
+ *  return 1 if pos overlap with tetri's own pos 
  */
 
 int tetri_collide_one(t_tetri *self, t_pos pos)
 {
-	if ((self->positions)[0].x == pos.x && (self->positions)[0].y == pos.y)
+	if ((self->pos)[0].x == pos.x && (self->pos)[0].y == pos.y)
 		return 1;
-	if ((self->positions)[1].x == pos.x && (self->positions)[1].y == pos.y)
+	if ((self->pos)[1].x == pos.x && (self->pos)[1].y == pos.y)
 		return 1;
-	if ((self->positions)[2].x == pos.x && (self->positions)[2].y == pos.y)
+	if ((self->pos)[2].x == pos.x && (self->pos)[2].y == pos.y)
 		return 1;
-	if ((self->positions)[3].x == pos.x && (self->positions)[3].y == pos.y)
+	if ((self->pos)[3].x == pos.x && (self->pos)[3].y == pos.y)
 		return 1;
 	return 0;
 }
@@ -97,8 +97,8 @@ void tetri_set_pos(t_tetri *self, t_pos new[4])
 {
 	void *dst;
 
-	dst = memmove(&(self->positions), new, sizeof(self->positions));
-	if (dst != &(self->positions))
+	dst = memmove(&(self->pos), new, sizeof(self->pos));
+	if (dst != &(self->pos))
 		exit(-1); //Don't know if this could happen
 	return;
 }

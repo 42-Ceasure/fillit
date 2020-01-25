@@ -34,7 +34,7 @@ typedef struct	s_pos
 
 typedef struct	s_tetri
 {
-	t_pos		positions[4];
+	t_pos		pos[4];
 	int         id;
 	t_pos		origin;
 	int			w;
@@ -43,16 +43,16 @@ typedef struct	s_tetri
 
 typedef struct	s_canvas
 {
-	char		**buffer;
+	char		**buf;
 	size_t		bufsize;
-	t_tetri		**tetriminos;
+	t_tetri		**tetri;
 	int			offset;
 }				t_canvas;
 
 typedef struct	s_env
 {
     size_t		n_tetri;
-    t_tetri		**tetriminos; // tetri_t (*tetriminos)[n_tetri];
+    t_tetri		**tetri; // tetri_t (*tetri)[n_tetri];
     int			fd;
 }				t_env;
 
@@ -69,7 +69,7 @@ void			prepare_tetri(t_env *env);
 
 int				get_tetriminos(t_env *env);
 
-int				canvas_buf_try_pos(char **buffer, t_pos pos, size_t);
+int				canvas_buf_try_pos(char **buf, t_pos pos, size_t);
 int				canvas_try_brush(t_canvas *self);
 void			canvas_brush(t_canvas *self);
 void			canvas_undo(t_canvas *self);

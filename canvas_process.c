@@ -2,21 +2,22 @@
 
 #include "fillit.h"
 
-int			canvas_buf_try_pos(char **buffer, t_pos pos, size_t size)
+int			canvas_buf_try_pos(char **buf, t_pos pos, size_t size)
 {
-	if ((pos.x >= (int)size || pos.y >= (int)size) || (buffer[pos.y][pos.x] != '.'))
+	if ((pos.x >= (int)size || pos.y >= (int)size)
+		|| (buf[pos.y][pos.x] != '.'))
 			return (1);
 	return (0);
 }
 
-int			canvas_try_brush(t_canvas *self)
+int			canvas_try_brush(t_canvas *s)
 {
-	if (canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[0], self->bufsize)
-		|| canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[1], self->bufsize)
-		|| canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[2], self->bufsize)
-		|| canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[3], self->bufsize))
+	if (canvas_buf_try_pos(s->buf, s->tetri[s->offset]->pos[0], s->bufsize)
+		|| canvas_buf_try_pos(s->buf, s->tetri[s->offset]->pos[1], s->bufsize)
+		|| canvas_buf_try_pos(s->buf, s->tetri[s->offset]->pos[2], s->bufsize)
+		|| canvas_buf_try_pos(s->buf, s->tetri[s->offset]->pos[3], s->bufsize))
 		return (1);
-	canvas_brush(self);
+	canvas_brush(s);
 	return (0);
 }
 
@@ -28,8 +29,8 @@ void		canvas_brush(t_canvas *self)
 	idx = 0;
 	while (idx < 4)
 	{
-		pos = self->tetriminos[self->offset]->positions[idx];
-		self->buffer[pos.y][pos.x] = 'A' + self->tetriminos[self->offset]->id;
+		pos = self->tetri[self->offset]->pos[idx];
+		self->buf[pos.y][pos.x] = 'A' + self->tetri[self->offset]->id;
 		idx += 1;
 	}
 	self->offset += 1;
@@ -45,8 +46,8 @@ void canvas_undo(t_canvas *self)
 	idx = 0;
 	while (idx < 4)
 	{
-		pos = self->tetriminos[self->offset]->positions[idx];
-		self->buffer[pos.y][pos.x] = '.';
+		pos = self->tetri[self->offset]->pos[idx];
+		self->buf[pos.y][pos.x] = '.';
 		idx += 1;
 	}
 }
