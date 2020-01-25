@@ -44,11 +44,9 @@ void			start_solve(t_canvas *canvas, size_t n_tetri)
 size_t			predict_size_min(size_t n_tetri)
 {
 	size_t		size;
-	size_t		blocs;
 
 	size = 2;
-	blocs = 4 * n_tetri;
-	while (size * size < blocs)
+	while (size * size < 4 * n_tetri)
 		size++;
 	return (size);
 }
