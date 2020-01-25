@@ -2,6 +2,15 @@
 
 #include "fillit.h"
 
+void			set_move(t_tetri *current, int x, int y)
+{
+	t_pos		move;
+
+	move.x = x;
+	move.y = y;
+	tetri_translate(current, move);
+}
+
 void		align_tetri_up(t_tetri *current)
 {
 	t_pos	up;

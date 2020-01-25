@@ -62,6 +62,7 @@ void 			tetri_translate(t_tetri *self, t_pos move);
 // void			tetri_set_orientation(t_tetri *self, orien_t);
 int				tetri_collide_one(t_tetri *self, t_pos);
 int				tetri_collide_few(t_tetri *self, t_pos *pos, unsigned int to_chk);
+void			set_move(t_tetri *current, int x, int y);
 void			align_tetri_up(t_tetri *current);
 void			align_tetri_left(t_tetri *current);
 void			prepare_tetri(t_env *env);
