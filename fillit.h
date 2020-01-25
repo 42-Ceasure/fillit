@@ -12,12 +12,6 @@
 #define TETRIMINO_INBUF 4 * 5
 #define READSIZE MAX_MINOS * TETRIMINO_INBUF + MAX_MINOS
 
-#define EOL "\n"
-#define LINE_NL(s) s EOL
-#define USAGE(s) LINE_NL(s)
-#define PRINT_RESULT printf("Result <%d>\n", result)
-#define print_positions(pos, cnt) for(int i = 0; i < cnt; i++){printf("%d - %d\n", pos[i].x, pos[i].y);}
-
 #define LEFT 0
 #define RIGHT 1
 
