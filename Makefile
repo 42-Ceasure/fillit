@@ -9,7 +9,8 @@ CFLAG	=	-Wall -Wextra -Werror -g -O0 -fsanitize=address
 
 NAME	=	fillit
 
-SRC		=	main.c canvas_meta.c canvas_process.c parser.c tetrimino.c
+SRC		=	main.c canvas_meta.c canvas_process.c parser.c tetrimino.c \
+			init_tetri.c
 
 OBJ		=	$(SRC:.c=.o)
 

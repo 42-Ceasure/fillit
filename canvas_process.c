@@ -2,19 +2,19 @@
 
 #include "fillit.h"
 
-int			canvas_buf_try_pos(char **buffer, t_pos pos)
+int			canvas_buf_try_pos(char **buffer, t_pos pos, size_t size)
 {
-	if (buffer[pos.y][pos.x] != '.')
-		return (1);
+	if ((pos.x >= (int)size || pos.y >= (int)size) || (buffer[pos.y][pos.x] != '.'))
+			return (1);
 	return (0);
 }
 
 int			canvas_try_brush(t_canvas *self)
 {
-	if (canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[0])
-		|| canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[1])
-		|| canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[2])
-		|| canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[3]))
+	if (canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[0], self->bufsize)
+		|| canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[1], self->bufsize)
+		|| canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[2], self->bufsize)
+		|| canvas_buf_try_pos(self->buffer, self->tetriminos[self->offset]->positions[3], self->bufsize))
 		return (1);
 	canvas_brush(self);
 	return (0);

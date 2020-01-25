@@ -2,91 +2,92 @@
 
 #include "fillit.h"
 
-void		align_tetri_up(t_tetri *current)
+void			reset_all_tetri(t_canvas *canvas, size_t n_tetri)
 {
-	t_pos	up;
-
-	up.x = 0;
-	up.y = -current->positions[0].y;
-	tetri_translate(current, up);
-}
-
-void		align_tetri_left(t_tetri *current)
-{
-	int		mem;
-	int		i;
-	t_pos	left;
-
-	left.y = 0;
-	mem = current->positions[0].x;
-	i = 1;
-	while (i < 4)
-	{
-		if (mem > current->positions[i].x)
-			mem = current->positions[i].x;
-		i++;
-	}
-	left.x = -mem;
-	tetri_translate(current, left);
-}
-
-void		mesure_tetri(t_tetri *current)
-{
-	int		i;
-	int 	mem_x;
-	int 	mem_y;
+	size_t		i;
 
 	i = 0;
-	current->origin.x = 0;
-	current->origin.y = 0;
-	mem_x = current->positions[0].x;
-	mem_y = current->positions[0].y;
-	while (i < 4)
+	while (i < n_tetri)
 	{
-		if (mem_x < current->positions[i].x)
-			mem_x = current->positions[i].x;
-		if (mem_y < current->positions[i].y)
-			mem_y = current->positions[i].y;
+		align_tetri_up(canvas->tetriminos[i]);
+		align_tetri_left(canvas->tetriminos[i]);
 		i++;
 	}
-	current->w = mem_x + 1;
-	current->h = mem_y + 1;
-	printf("tetri:%d\norigin.x:%d\norigin.y:%d\nw:%d\nh:%d\n\n", current->id, current->origin.x, current->origin.y, current->w, current->h);
 }
 
-void		prepare_tetri(t_env *env)
+void			set_move(t_tetri *current, int x, int y)
 {
-	size_t	i;
+	t_pos		move;
 
-	i = 0;
-	while (i < env->n_tetri)
+	move.x = x;
+	move.y = y;
+	tetri_translate(current, move);
+}
+
+int				solve(t_canvas canvas, size_t n_tetri)
+{
+	int			x;
+	int			y;
+
+	y = 0;
+	if (canvas.offset == (int)n_tetri)
+		return (1);
+	printf("solve called for tetri:%d,w:%d,h:%d\n", canvas.offset,	canvas.tetriminos[canvas.offset]->w, canvas.tetriminos[canvas.offset]->h);
+	while (y <= ((int)canvas.bufsize - canvas.tetriminos[canvas.offset]->h))
 	{
-		align_tetri_up(env->tetriminos[i]);
-		align_tetri_left(env->tetriminos[i]);
-		mesure_tetri(env->tetriminos[i]);
-		i++;
+		x = 0;
+		while (x < (int)canvas.bufsize)
+		{
+			printf("try on x:%d,y:%d\n", x, y);
+			if (canvas_try_brush(&canvas) == 0)
+			{
+				print_canvas(canvas);
+				ft_putchar('\n');
+				if (solve(canvas, n_tetri))
+					return (1);
+				else
+					canvas_undo(&canvas);
+			}
+			set_move(canvas.tetriminos[canvas.offset], 1, 0);
+			x++;
+		}
+		set_move(canvas.tetriminos[canvas.offset], -x, 1);
+		y++;
 	}
-	return ;
+	set_move(canvas.tetriminos[canvas.offset], 0, -y);
+	return (0);
 }
 
-void		ceas_official_relay(t_env *env)
+void			try_solve(t_canvas *canvas, size_t n_tetri)
 {
-	t_canvas canvas;
+	while (!solve(*canvas, n_tetri))
+	{
+		ft_putendl("map too small, increase");
+		// reset_all_tetri(canvas, n_tetri);
+		canvas->bufsize += 1;
+		// canvas->offset = 0;
+		canvas->buffer = canvas_resize_buffer(canvas->buffer, canvas->bufsize);
+	}
+}
 
-	canvas.buffer = canvas_create_buffer(12);
+void			ceas_official_relay(t_env *env)
+{
+	t_canvas	canvas;
+
+	canvas.bufsize = 2;
+	canvas.buffer = canvas_create_buffer(canvas.bufsize);
 	canvas.offset = 0;
-	// ft_putstr("----------------------");
-	canvas.tetriminos = env->tetriminos;
 	prepare_tetri(env);
-	canvas_try_brush(&canvas);
-	// canvas_try_put(&canvas, env->tetriminos[2]);
+	canvas.tetriminos = env->tetriminos;
+	ft_putendl("ok let's go");
+	try_solve(&canvas, env->n_tetri);
 	print_canvas(canvas);
 	return ;
 }
 
-int			uu_legacy_launch(char **argv, t_env *env)
+int				uu_legacy_launch(char **argv, t_env *env)
 {
-	int result;
+	int 		result;
 
 	result = open(argv[1], O_RDONLY);
 	if (result == -1)
@@ -96,9 +97,9 @@ int			uu_legacy_launch(char **argv, t_env *env)
 	return (0);
 }
 
-int			main(int ac, char **av)
+int				main(int ac, char **av)
 {
-	t_env	env;
+	t_env		env;
 
 	if (ac == 2)
 	{

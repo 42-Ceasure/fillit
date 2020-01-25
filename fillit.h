@@ -21,6 +21,11 @@
 #define LEFT 0
 #define RIGHT 1
 
+#define M_U 0, -1
+#define M_D 0, 1
+#define M_L	-1, 0
+#define M_R	1, 0
+
 typedef struct	s_pos
 {
     int			x;
@@ -57,13 +62,16 @@ void 			tetri_translate(t_tetri *self, t_pos move);
 // void			tetri_set_orientation(t_tetri *self, orien_t);
 int				tetri_collide_one(t_tetri *self, t_pos);
 int				tetri_collide_few(t_tetri *self, t_pos *pos, unsigned int to_chk);
+void			align_tetri_up(t_tetri *current);
+void			align_tetri_left(t_tetri *current);
+void			prepare_tetri(t_env *env);
 
 int				get_tetriminos(t_env *env);
 
-int				canvas_buf_try_pos(char **buffer, t_pos pos);
+int				canvas_buf_try_pos(char **buffer, t_pos pos, size_t);
 int				canvas_try_brush(t_canvas *self);
 void			canvas_brush(t_canvas *self);
-t_pos			*canvas_pop(t_canvas *self);
+void			canvas_undo(t_canvas *self);
 
 t_canvas		*canvas_new(int bufsize);
 char			**canvas_create_buffer(int size);
