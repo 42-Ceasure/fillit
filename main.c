@@ -2,37 +2,37 @@
 
 #include "fillit.h"
 
-int				solve(t_canvas canvas, size_t n_tetri)
+int				solve(t_canvas *canvas, size_t n_tetri)
 {
 	int			x;
 	int			y;
 
 	y = -1;
-	if (canvas.offset == (int)n_tetri)
+	if (canvas->offset == (int)n_tetri)
 		return (1);
-	while (++y <= ((int)canvas.bufsize - canvas.tetriminos[canvas.offset]->h))
+	while (++y <= ((int)canvas->bufsize - canvas->tetriminos[canvas->offset]->h))
 	{
 		x = -1;
-		while (++x < (int)canvas.bufsize)
+		while (++x < (int)canvas->bufsize)
 		{
-			if (canvas_try_brush(&canvas) == 0)
+			if (canvas_try_brush(canvas) == 0)
 			{
 				if (solve(canvas, n_tetri))
 					return (1);
 				else
-					canvas_undo(&canvas);
+					canvas_undo(canvas);
 			}
-			set_move(canvas.tetriminos[canvas.offset], 1, 0);
+			set_move(canvas->tetriminos[canvas->offset], 1, 0);
 		}
-		set_move(canvas.tetriminos[canvas.offset], -x, 1);
+		set_move(canvas->tetriminos[canvas->offset], -x, 1);
 	}
-	set_move(canvas.tetriminos[canvas.offset], 0, -y);
+	set_move(canvas->tetriminos[canvas->offset], 0, -y);
 	return (0);
 }
 
 void			start_solve(t_canvas *canvas, size_t n_tetri)
 {
-	while (!solve(*canvas, n_tetri))
+	while (!solve(canvas, n_tetri))
 	{
 		canvas->bufsize += 1;
 		canvas->buffer = canvas_resize_buffer(canvas->buffer, canvas->bufsize);
