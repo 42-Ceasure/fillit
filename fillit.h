@@ -41,6 +41,7 @@ typedef struct	s_canvas
 	size_t		bufsize;
 	t_tetri		**tetri;
 	int			offset;
+	size_t		op_count;
 }				t_canvas;
 
 typedef struct	s_env

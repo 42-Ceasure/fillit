@@ -15,6 +15,8 @@ int				solve(t_canvas *canvas, size_t n_tetri)
 		x = -1;
 		while (++x < (int)canvas->bufsize)
 		{
+			canvas->op_count++;
+			// printf("operation:%lu\n", canvas->op_count);
 			if (canvas_try_brush(canvas) == 0)
 			{
 				if (solve(canvas, n_tetri))
@@ -39,16 +41,31 @@ void			start_solve(t_canvas *canvas, size_t n_tetri)
 	}
 }
 
+size_t			predict_size_min(size_t n_tetri)
+{
+	size_t		size;
+	size_t		blocs;
+
+	size = 2;
+	blocs = 4 * n_tetri;
+	while (size * size < blocs)
+		size++;
+	return (size);
+}
+
 void			start_work(t_env *env)
 {
 	t_canvas	canvas;
 
-	canvas.bufsize = 2;
+	canvas.op_count = 1;
+	canvas.bufsize = predict_size_min(env->n_tetri);
+	printf("size min : %lu\n", canvas.bufsize);
 	canvas.buf = canvas_create_buffer(canvas.bufsize);
 	canvas.offset = 0;
 	prepare_tetri(env);
 	canvas.tetri = env->tetri;
 	start_solve(&canvas, env->n_tetri);
+	printf("canvas solved in %lu operations\n", canvas.op_count);
 	print_canvas(canvas);
 	return ;
 }

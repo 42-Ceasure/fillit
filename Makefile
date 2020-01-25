@@ -23,7 +23,7 @@ $(NAME):	$(OBJ)
 			$(CC) $(CFLAG) -c -o $@ $<
 
 _libft:
-			make -C libft	
+			@make -C libft	
 
 clean:
 			make clean -C libft
