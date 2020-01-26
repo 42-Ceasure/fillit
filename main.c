@@ -103,7 +103,6 @@ int			solve_loop(t_canvas *self, int n_tetri) {
 		if (result) {
 			canvas_undo(self);
 		}
-		self->tetriminos[12000] = NULL;
 	}
 	print_canvas(*self);
 	// printf("offset <%d> x,y: <%d, %d> result: <%zu>\n", self->offset, self->tetriminos[self->offset]->origin.x, self->tetriminos[self->offset]->origin.y, self->bufsize);
