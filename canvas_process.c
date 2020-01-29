@@ -1,4 +1,14 @@
-/* BIG42HEADER */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   canvas_process.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cglavieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/29 16:58:32 by cglavieu          #+#    #+#             */
+/*   Updated: 2020/01/29 16:58:33 by cglavieu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "fillit.h"
 
@@ -6,7 +16,7 @@ int			canvas_buf_try_pos(char **buf, t_pos pos, size_t size)
 {
 	if ((pos.x >= (int)size || pos.y >= (int)size)
 		|| (buf[pos.y][pos.x] != '.'))
-			return (1);
+		return (1);
 	return (0);
 }
 
@@ -23,8 +33,8 @@ int			canvas_try_brush(t_canvas *s)
 
 void		canvas_brush(t_canvas *self)
 {
-	int			idx;
-	t_pos		pos;
+	int		idx;
+	t_pos	pos;
 
 	idx = 0;
 	while (idx < 4)
@@ -37,10 +47,10 @@ void		canvas_brush(t_canvas *self)
 	return ;
 }
 
-void canvas_undo(t_canvas *self)
+void		canvas_undo(t_canvas *self)
 {
-	int			idx;
-	t_pos		pos;
+	int		idx;
+	t_pos	pos;
 
 	self->offset -= 1;
 	idx = 0;

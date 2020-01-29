@@ -9,8 +9,8 @@ CFLAG	=	-Wall -Wextra -Werror
 
 NAME	=	fillit
 
-SRC		=	main.c canvas_meta.c canvas_process.c parser.c tetrimino.c \
-			init_tetri.c
+SRC		=	main.c canvas_meta.c canvas_process.c parser.c parser_next.c \
+			tetrimino.c init_tetri.c solver.c
 
 OBJ		=	$(SRC:.c=.o)
 
