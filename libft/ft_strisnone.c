@@ -1,24 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memalloc.c                                      :+:      :+:    :+:   */
+/*   ft_strisnone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cglavieu <cglavieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nvienot <nvienot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/01/16 19:14:34 by cglavieu          #+#    #+#             */
-/*   Updated: 2015/05/08 10:40:42 by cglavieu         ###   ########.fr       */
+/*   Created: 2019/07/24 15:37:37 by nvienot           #+#    #+#             */
+/*   Updated: 2019/07/24 15:47:21 by nvienot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memalloc(size_t size)
+static int	ft_none(char c)
 {
-	void	*mem;
-	char	*t;
+	if (c == '\n' || c == '\t' || c == ' ')
+		return (1);
+	return (0);
+}
 
-	mem = (void *)malloc(size);
-	t = (char *)mem;
-	ft_bzero(t, size);
-	return (mem);
+int			ft_strisnone(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str == NULL)
+		return (1);
+	while (str[i])
+	{
+		if (ft_none(str[i]) != 1)
+			return (0);
+		i++;
+	}
+	return (1);
 }

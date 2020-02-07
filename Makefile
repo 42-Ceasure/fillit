@@ -1,35 +1,36 @@
 # BIG42HEADER #
-
-.PHONY:		all, clean, fclean, re
-.SUFFIXES:
-
 CC		=	gcc
 
 CFLAG	=	-Wall -Wextra -Werror
 
 NAME	=	fillit
 
-SRC		=	main.c canvas_meta.c canvas_process.c parser.c tetrimino.c \
-			init_tetri.c
+LIBFT_A =	libft/libft.a
+
+SRC		=	main.c canvas_meta.c canvas_process.c parser.c parser_next.c \
+			tetrimino.c init_tetri.c solver.c
 
 OBJ		=	$(SRC:.c=.o)
 
-all: 		_libft $(NAME)
+.PHONY:		all, clean, fclean, re, _libft
 
-$(NAME):	$(OBJ)
-			$(CC) $(CFLAG) -o $@ $^ -L libft/ -lft
+all: 		$(NAME)
+
+$(NAME):	$(OBJ) $(LIBFT_A)
+			$(CC) $(CFLAG) -o $@ $(OBJ) -L libft/ -lft
 
 %.o:		%.c
 			$(CC) $(CFLAG) -c -o $@ $<
 
-_libft:
-			@make -C libft	
+$(LIBFT_A):
+			make -C libft	
 
 clean:
-			make clean -C libft
+			make -C libft clean
 			rm -f $(OBJ)
 
 fclean: 	clean
+			make -C libft fclean
 			rm -f $(NAME)
 
 re:			fclean all

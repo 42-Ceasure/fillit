@@ -1,15 +1,16 @@
-/* BIG42HEADER */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_tetri.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cglavieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/29 16:59:01 by cglavieu          #+#    #+#             */
+/*   Updated: 2020/01/29 16:59:01 by cglavieu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "fillit.h"
-
-void		set_move(t_tetri *current, int x, int y)
-{
-	t_pos	move;
-
-	move.x = x;
-	move.y = y;
-	tetri_translate(current, move);
-}
 
 void		align_tetri_up(t_tetri *current)
 {
@@ -42,8 +43,8 @@ void		align_tetri_left(t_tetri *current)
 void		mesure_tetri(t_tetri *current)
 {
 	int		i;
-	int 	mem_x;
-	int 	mem_y;
+	int		mem_x;
+	int		mem_y;
 
 	i = 0;
 	current->origin.x = 0;

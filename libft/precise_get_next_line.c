@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   precise_get_next_line.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cglavieu <cglavieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nvienot <nvienot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/18 16:34:01 by cglavieu          #+#    #+#             */
-/*   Updated: 2015/05/19 19:56:46 by cglavieu         ###   ########.fr       */
+/*   Updated: 2019/07/25 07:15:11 by nvienot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,39 +44,36 @@ static char			*ft_stock(char *s)
 	return (str);
 }
 
-// static void				ft_norme(char **buff, char **line, char **save, int ret)
-// {
-// 	ft_strdel(buff);
-// 	*line = ft_line(*save);
-// 	if (ret == 0)
-// 		ft_strdel(save);
-// }
+static void			ft_norme(char **buff, char **line, char **save, int ret)
+{
+	ft_strdel(buff);
+	*line = ft_line(*save);
+	if (ret == 0)
+		ft_strdel(save);
+}
 
-int					get_next_line_until(int const fd, char **line, int stop)
+int					precise_get_next_line(int const fd, char **line, int size)
 {
 	int				ret;
 	char			*temp;
 	static char		*save;
 	char			*buff;
 
-	buff = ft_strnew(BUFF_SIZE + 1);
+	buff = ft_strnew(size + 1);
 	save = (save == NULL) ? ft_strnew(1) : save;
-	if (buff == NULL || BUFF_SIZE <= 0 || line == NULL)
+	if (buff == NULL || size <= 0 || line == NULL)
 		return (-1);
 	ret = 42;
 	while ((ft_strchr(save, '\n') == NULL) && ret > 0)
 	{
-		if ((ret = read(fd, buff, BUFF_SIZE)) == -1)
+		if ((ret = read(fd, buff, size)) == -1)
 			return (-1);
 		buff[ret] = '\0';
 		temp = save;
 		save = ft_strjoin(save, buff);
 		ft_strdel(&temp);
 	}
-	ft_strdel(&buff);
-	*line = ft_line(save);
-	if (ret == 0 || stop == 1)
-		ft_strdel(&save);
+	ft_norme(&buff, line, &save, ret);
 	if (ret == 0 && *line[0] == '\0')
 		return (0);
 	save = ft_stock(save);
